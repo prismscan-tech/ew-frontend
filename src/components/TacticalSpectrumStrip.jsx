@@ -1,8 +1,10 @@
 import React from 'react';
 
 export default function TacticalSpectrumStrip({ state }) {
-  // Hardcoded to 110 to 690 MHz as requested
-  const bands = Array.from({ length: 30 }, (_, i) => 110 + i * 20);
+  // Dynamically use the exact frequency bands provided by the backend ML API
+  // Fallback to the 45-channel default (110 to 990) if offline
+  const fallbackBands = Array.from({ length: 45 }, (_, i) => 110 + i * 20);
+  const bands = state.bandsMhz && state.bandsMhz.length > 0 ? state.bandsMhz : fallbackBands;
 
   // Get the most recent scan to determine if there was a hit
   const lastScan = state.scanHistory && state.scanHistory.length > 0
