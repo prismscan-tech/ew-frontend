@@ -38,8 +38,9 @@ export default function FrequencyActivity({ scanHistory, predictedFrequency, ban
   const [hover, setHover] = useState(null);
   const [showTruth, setShowTruth] = useState(false);
 
-  // Dynamically map to the full simulated spectrum
-  const freqValues = bandsMhz && bandsMhz.length > 0 ? bandsMhz : FREQ_BIN_TABLE.map((b) => b.freq);
+  // Use dynamic bands but cap the graph at 790MHz max
+  let freqValues = bandsMhz && bandsMhz.length > 0 ? bandsMhz : FREQ_BIN_TABLE.map((b) => b.freq);
+  freqValues = freqValues.filter(f => f <= 790);
   const minFreq = Math.min(...freqValues);
   const maxFreq = Math.max(...freqValues);
 
