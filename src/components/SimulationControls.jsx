@@ -73,7 +73,7 @@ export default function SimulationControls({ running, scenario, setScenario, sce
       <div className="flex flex-col gap-2.5">
         <div className="grid grid-cols-2 gap-2">
           {!running ? (
-            <Button primary onClick={() => actions.start(speed.replace('×', 'x'))}>▶ Start</Button>
+            <Button primary onClick={() => actions.start(speed.replace('×', 'x'), Number(seed))}>▶ Start</Button>
           ) : (
             <Button onClick={actions.pause}>⏸ Pause</Button>
           )}
