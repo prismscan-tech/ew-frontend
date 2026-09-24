@@ -276,7 +276,7 @@ export function useSimulation() {
         }
         case 'session_started':
           sessionIdRef.current = event.sessionId;
-          setRunning(true);
+          setRunning(event.payload?.status !== 'paused');
           break;
         case 'session_paused':
           setRunning(false);
@@ -401,7 +401,8 @@ export function useSimulation() {
         await api.completeSession(sessionIdRef.current);
         sessionIdRef.current = null;
       }
-      const session = await api.startSession(newScenario, newScheduler, seed);
+      const startPaused = !wasRunning;
+      const session = await api.startSession(newScenario, newScheduler, seed, startPaused);
       if (session) {
         sessionIdRef.current = session.sessionId;
         setState(prev => ({ ...prev, timestep: 0, scanHistory: [], recentScans: [] }));
@@ -410,12 +411,7 @@ export function useSimulation() {
         setIsDemo(false);
         await api.setSpeed(session.sessionId, initialSpeed);
         
-        if (wasRunning) {
-          setRunning(true);
-        } else {
-          // Keep it paused if it wasn't running
-          await api.pauseSession(session.sessionId);
-        }
+        setRunning(wasRunning);
       } else {
         setIsDemo(true);
       }

@@ -50,8 +50,8 @@ export const api = {
   getSessionHistory: (sessionId, limit) =>
     getJSON(`/sessions/${sessionId}/history${limit ? `?limit=${limit}` : ''}`),
 
-  startSession: (scenarioName, schedulerName, seed) =>
-    postJSON('/sessions', { scenarioName, schedulerName, seed }),
+  startSession: (scenarioName, schedulerName, seed, startPaused = false) =>
+    postJSON('/sessions', { scenarioName, schedulerName, seed, startPaused }),
   pauseSession: (sessionId) => postJSON(`/sessions/${sessionId}/pause`),
   resumeSession: (sessionId) => postJSON(`/sessions/${sessionId}/resume`),
   completeSession: (sessionId) => postJSON(`/sessions/${sessionId}/complete`),
